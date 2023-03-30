@@ -1,5 +1,9 @@
 package com.workshop39.servermarvel.models;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+
 public class MarvelCharacter {
     private Integer id;
     private String name;
@@ -36,9 +40,48 @@ public class MarvelCharacter {
         return "MarvelCharacter [id=" + id + ", name=" + name + ", desc=" + desc + ", thumbnail=" + thumbnail + "]";
     }
 
-    // public toJson() {
+    public static MarvelCharacter toMarvelChar(JsonObject obj) {
+        MarvelCharacter mc = new MarvelCharacter();
+        mc.setId(getIntValue("id", obj));
+        mc.setName(getStringValue("name", obj));
+        mc.setDesc(getStringValue("description", obj));
+        mc.setThumbnail(getThumbnail("thumbnail", obj));
+        return mc;
+    }
 
-    // }
-    
+    public static Integer getIntValue(String label, JsonObject o) {
+        // #1.check for key, #2.check for null in key
+        if (o.containsKey(label) && !o.isNull(label)) {
+            return o.getInt(label);
+        }
+        return 0;
+    }
+
+    public static String getStringValue(String label, JsonObject o) {
+        if(o.containsKey(label) && !o.isNull(label)) {
+            return o.getString(label);
+        }
+        return "No value";
+    }
+
+    public static String getThumbnail(String label, JsonObject o) {
+        JsonObject tn = o.getJsonObject("thumbnail");
+        System.out.println("\n\nThumbnail Object: " + tn);
+
+        // check if key & value of key present
+        if (tn.containsKey("path") && !tn.isNull("path")) {
+            return tn.getString("path") + "." + tn.getString("extension");
+        }
+        return "No Image";
+    }
+
+    public JsonObject toJson() {
+        return Json.createObjectBuilder()
+                .add("id", id)
+                .add("name", name)
+                .add("desc", desc)
+                .add("thumbnail", thumbnail)
+                .build();
+    }
     
 }
