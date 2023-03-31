@@ -1,5 +1,6 @@
 package com.workshop39.servermarvel.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,16 +65,31 @@ public class MarvelController {
                 .body(arrayBuilder.build().toString());
     }
 
+    // FIXME: Current Task
     // Controller to retrieve ONE character
     @GetMapping(path="/character/{id}")
-    public void getSingleCharacter(@PathVariable Integer id) {
-        
-        // TODO: 
+    @ResponseBody
+    public ResponseEntity<String> getSingleCharacter(@PathVariable Integer id) {
         // 1. query redis for existing characters
+        MarvelCharacter mc = redisSvc.getCharacter(id);
 
-        // 2. if not available, make API call with character id (TBC)
-
-        
+        if (null != mc) {
+            List<MarvelCharacter> list = new ArrayList<>();
+            list.add(mc);
+            redisSvc.saveToRedis(list);
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(mc.toJson().toString());
+        }
+        String message = Json.createObjectBuilder()
+            .add("message", "Invalid Character ID")
+            .add("error","BAD REQUEST")
+            .build().toString();
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(message);
     }
 
 

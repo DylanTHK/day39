@@ -1,8 +1,10 @@
 package com.workshop39.servermarvel.services;
 
 import java.io.StringReader;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,13 +35,10 @@ public class MarvelService {
     @Autowired
     RedisRepo redisRepo;
 
-    // public JsonArray getMarvelCharacters(
     public List<MarvelCharacter> getMarvelCharacters(
         String name, Integer ts, Integer limit, Integer offset) {
-
         String hashString = ts + PRIVATE_KEY + PUBLIC_KEY;
         String hashKey = MD5Utils.stringToHash(hashString);
-        
         // System.out.println("\n\nMarvelSvc hashString: " + hashString);
         // System.out.println("\n\nMarvelSvc hashKey: " + hashKey);
 
@@ -52,23 +51,19 @@ public class MarvelService {
             .queryParam("offset", offset)
             .build().toString();
 
-        System.out.println("\n\n URL: " + url);
-
         // Formatting Request headers
         RequestEntity<Void> req = RequestEntity.get(url)
             .accept(MediaType.APPLICATION_JSON)
             .build();
-
         // Initialise template and entity
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> resp = null;
-
         // Make API Call
         try {
             resp = restTemplate.exchange(req, String.class);
         } catch(RestClientException e) {
             e.printStackTrace();
-            // return Collections.emptyList();
+            return Collections.emptyList();
         }
         
         // get body -> stringReader -> createrReader
@@ -82,7 +77,47 @@ public class MarvelService {
             .map(c -> c.asJsonObject())
             .map(MarvelCharacter::toMarvelChar)
             .toList();
-        
+    }
+
+    public Optional<MarvelCharacter> getMarvelCharacter(Integer id) {
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Long ts = timestamp.getTime();
+        String hashString = ts + PRIVATE_KEY + PUBLIC_KEY;
+        String hashKey = MD5Utils.stringToHash(hashString);
+
+        String newURL = MARVEL_URL + "/" + id;
+        String url = UriComponentsBuilder.fromUriString(newURL)
+            .queryParam("ts", ts)
+            .queryParam("apikey", PUBLIC_KEY)
+            .queryParam("hash", hashKey)
+            .build().toString();
+
+        System.out.println("NEW URL WITH PV: " + url);
+
+        // Formatting Request headers
+        RequestEntity<Void> req = RequestEntity.get(url)
+            .accept(MediaType.APPLICATION_JSON)
+            .build();
+        // Initialise template and entity
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> resp = null;
+        // Make API Call
+        try {
+            resp = restTemplate.exchange(req, String.class);
+        } catch(RestClientException e) {
+            // e.printStackTrace();
+            return Optional.empty();
+        }
+
+        // get body -> stringReader -> createrReader
+        JsonReader reader = Json.createReader(new StringReader(resp.getBody()));
+        JsonObject o = reader.readObject()
+            .getJsonObject("data")
+            .getJsonArray("results")
+            .getJsonObject(0);
+
+        return Optional.of(MarvelCharacter.toMarvelChar(o));
     }
 
 

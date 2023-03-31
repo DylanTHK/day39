@@ -31,21 +31,22 @@ public class RedisRepo {
         listMc.stream()
             .forEach(mc -> {
                 String id = mc.getId().toString();
-                if(!redisTemplate.hasKey(id)) {
+                // if(!redisTemplate.hasKey(id)) {
                     ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
                     valueOps.set(id, mc.toJson().toString(), 60, TimeUnit.MINUTES);
-                }
+                // }
             });
     }
 
-    // TODO: check code block is valid
+    // retrieve MarvelCharacter from Redis
     public Optional<MarvelCharacter> get(String id) {
         // Query MarvelCharacter by id
         String json = redisTemplate.opsForValue().get(id);
         if ((null == json) || (json.trim().length() <= 0))
             return Optional.empty();
-        
         JsonObject obj = Json.createReader(new StringReader(json)).readObject();
-		return Optional.of(MarvelCharacter.toMarvelChar(obj));
+        // convert JsonObject to MarvelCharacter
+        MarvelCharacter mc = MarvelCharacter.create(obj);
+		return Optional.of(mc);
     }
 }

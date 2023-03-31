@@ -7,7 +7,7 @@ import jakarta.json.JsonObjectBuilder;
 public class MarvelCharacter {
     private Integer id;
     private String name;
-    private String desc;
+    private String description;
     private String thumbnail;
 
     public Integer getId() {
@@ -23,10 +23,10 @@ public class MarvelCharacter {
         this.name = name;
     }
     public String getDesc() {
-        return desc;
+        return description;
     }
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.description = desc;
     }
     public String getThumbnail() {
         return thumbnail;
@@ -37,15 +37,26 @@ public class MarvelCharacter {
 
     @Override
     public String toString() {
-        return "MarvelCharacter [id=" + id + ", name=" + name + ", desc=" + desc + ", thumbnail=" + thumbnail + "]";
+        return "MarvelCharacter [id=" + id + ", name=" + name + ", description=" + description + ", thumbnail=" + thumbnail + "]";
     }
 
+    // converts from API call
     public static MarvelCharacter toMarvelChar(JsonObject obj) {
         MarvelCharacter mc = new MarvelCharacter();
         mc.setId(getIntValue("id", obj));
         mc.setName(getStringValue("name", obj));
         mc.setDesc(getStringValue("description", obj));
         mc.setThumbnail(getThumbnail("thumbnail", obj));
+        return mc;
+    }
+
+    // create MC from redis
+    public static MarvelCharacter create(JsonObject o) {
+        MarvelCharacter mc = new MarvelCharacter();
+        mc.setId(o.getInt("id"));
+        mc.setName(o.getString("name"));
+        mc.setDesc(o.getString("description"));
+        mc.setThumbnail(o.getString("thumbnail"));
         return mc;
     }
 
@@ -66,8 +77,6 @@ public class MarvelCharacter {
 
     public static String getThumbnail(String label, JsonObject o) {
         JsonObject tn = o.getJsonObject("thumbnail");
-        System.out.println("\n\nThumbnail Object: " + tn);
-
         // check if key & value of key present
         if (tn.containsKey("path") && !tn.isNull("path")) {
             return tn.getString("path") + "." + tn.getString("extension");
@@ -79,7 +88,7 @@ public class MarvelCharacter {
         return Json.createObjectBuilder()
                 .add("id", id)
                 .add("name", name)
-                .add("desc", desc)
+                .add("description", description)
                 .add("thumbnail", thumbnail)
                 .build();
     }
