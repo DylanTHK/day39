@@ -1,9 +1,12 @@
 # day39
 Marvel Char App
 
+TODO: 
 CORS? 
 check referrer for Marvel website (add new referrer)
 https://developer.marvel.com/account#
+Check if required whitelisting of SB API
+https://developer.marvel.com/documentation/authorization
 
 ## PWA (can find file name in package.json)
 ng add @angular/pwa --project <project-name>@0.0.0 
@@ -14,9 +17,7 @@ mvn clean spring-boot:run
 ## Running Angular with proxy (base URL)
 ng server --proxy-config src/proxy-config.js
 
-https://developer.marvel.com/documentation/authorization
-
-
+## Marvel API
 Sample api call url
 https://gateway.marvel.com/v1/public/characters?ts=1&apikey=f886f6f8de8dcc526df360bf71f33db4&hash=df865deb69923f4d970c5f260ad27136
 https://gateway.marvel.com/v1/public/characters?ts=1&apiKey=f886f6f8de8dcc526df360bf71f33db4&hash=df865deb69923f4d970c5f260ad27136&nameStartsWith=abomination
@@ -35,3 +36,19 @@ Base: https://gateway.marvel.com/v1/public/characters
     }
 }
 ```
+
+## Optional
+1. return empty value
+    - return Optional.empty();
+
+2. return value
+    - return Optional.of(value);
+
+
+
+Angular
+SpringBoot
+Redis (store chracter details - temporary)
+MongoDB (store comments)
+- key: id
+- value: list of comments 

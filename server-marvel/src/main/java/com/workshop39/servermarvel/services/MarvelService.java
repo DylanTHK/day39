@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.workshop39.servermarvel.models.MarvelCharacter;
+import com.workshop39.servermarvel.repositories.RedisRepo;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -28,7 +29,9 @@ public class MarvelService {
     private String MARVEL_URL = "https://gateway.marvel.com/v1/public/characters";
     private String PUBLIC_KEY = "f886f6f8de8dcc526df360bf71f33db4";
     private String PRIVATE_KEY = "30b07410754152bf9e5b25f2d71f7c5a800e08d4";
-        
+    
+    @Autowired
+    RedisRepo redisRepo;
 
     // public JsonArray getMarvelCharacters(
     public List<MarvelCharacter> getMarvelCharacters(
@@ -67,17 +70,12 @@ public class MarvelService {
             e.printStackTrace();
             // return Collections.emptyList();
         }
-
-        // System.out.println("\n\n Result from API: " + resp);
         
-        // TODO: convert string to json
         // get body -> stringReader -> createrReader
         JsonReader reader = Json.createReader(new StringReader(resp.getBody()));
         JsonArray jsonArray = reader.readObject()
             .getJsonObject("data")
             .getJsonArray("results");
-
-        // System.out.println("\n\n Json Characters: " + jsonArray);
         
         // convert Json Objects to List of MarvelCharacters
         return jsonArray.stream()
@@ -86,4 +84,6 @@ public class MarvelService {
             .toList();
         
     }
+
+
 }
