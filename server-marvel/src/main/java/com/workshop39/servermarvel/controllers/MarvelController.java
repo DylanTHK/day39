@@ -99,7 +99,7 @@ public class MarvelController {
     // Controller to save comments & TODO:return inserted comment
     @PostMapping(path="/character/{id}")
     public ResponseEntity<String> addComment(
-        @PathVariable String id,
+        @PathVariable Integer id,
         @RequestBody String comment) {
 
         Comment c = mongoSvc.saveComment(id, comment);
@@ -110,4 +110,29 @@ public class MarvelController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(c.toJson().toString());
     }
+
+    @GetMapping(path="/comments/{id}")
+    public ResponseEntity<String> getComments(@PathVariable Integer id) {
+        // get list of comments
+        List<Comment> lc = mongoSvc.getComments(id);
+        
+        // convert list to jsonArray
+        JsonArrayBuilder array = Json.createArrayBuilder();
+        lc.stream()
+            .map(c -> c.toJson())
+            .forEach(c -> array.add(c));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(array.build().toString());
+    }
+
+    // TODO: REMOVE
+    @GetMapping(path="test")
+    public String getMethodName() {
+        
+        return "yes";
+    }
+    
 }

@@ -49,7 +49,7 @@ public class Comment {
     public static Comment docToComment(Document d) {
         Comment c = new Comment();
         c.setTs(Timestamp.valueOf(d.getString("ts")));
-        c.setId(Integer.valueOf(d.getString("id")));
+        c.setId(d.getInteger("id"));
         c.setComment(d.getString("comment"));
         return c;
     }
