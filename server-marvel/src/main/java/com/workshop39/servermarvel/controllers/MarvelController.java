@@ -1,5 +1,7 @@
 package com.workshop39.servermarvel.controllers;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,35 +9,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.workshop39.servermarvel.models.MarvelCharacter;
+import com.workshop39.servermarvel.models.Comment;
 import com.workshop39.servermarvel.services.MarvelService;
+import com.workshop39.servermarvel.services.MongoService;
 import com.workshop39.servermarvel.services.RedisService;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 
-@Controller
+@RestController
 @RequestMapping(path="/api")
 public class MarvelController {
     
     @Autowired
-    MarvelService marvelSvc;
+    private MarvelService marvelSvc;
 
     @Autowired
-    RedisService redisSvc;
+    private RedisService redisSvc;
+
+    @Autowired
+    private MongoService mongoSvc;
 
     // to get list of related character(s)
     @GetMapping(path="/characters")
-    @ResponseBody
     public ResponseEntity<String> getCharacters(
         @RequestParam String name, 
         @RequestParam(defaultValue="1") Integer ts,
@@ -65,10 +70,8 @@ public class MarvelController {
                 .body(arrayBuilder.build().toString());
     }
 
-    // FIXME: Current Task
     // Controller to retrieve ONE character
     @GetMapping(path="/character/{id}")
-    @ResponseBody
     public ResponseEntity<String> getSingleCharacter(@PathVariable Integer id) {
         // 1. query redis for existing characters
         MarvelCharacter mc = redisSvc.getCharacter(id);
@@ -93,19 +96,18 @@ public class MarvelController {
     }
 
 
-    // Controller to save comments
-    @PostMapping(path="/character/{id}", 
-        consumes=MediaType.APPLICATION_JSON_VALUE, 
-        produces=MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody // indicate return value of a method
-    public void postComment(
+    // Controller to save comments & TODO:return inserted comment
+    @PostMapping(path="/character/{id}")
+    public ResponseEntity<String> addComment(
         @PathVariable String id,
         @RequestBody String comment) {
-        System.out.println("\n\nReceived ID: " + id);
-        System.out.println("Received Comment: " + comment);
+
+        Comment c = mongoSvc.saveComment(id, comment);
         
-
-        // TODO: save comment to mongoDB
-
+        System.out.println("\n\n INSIDE addComment: " + c);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(c.toJson().toString());
     }
 }

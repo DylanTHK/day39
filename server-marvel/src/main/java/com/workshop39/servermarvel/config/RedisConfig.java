@@ -4,12 +4,14 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+@Configuration
 public class RedisConfig {
     private Logger logger = Logger.getLogger(RedisConfig.class.getName());
 
@@ -28,7 +30,7 @@ public class RedisConfig {
 	@Value("${spring.redis.password}")
 	private String redisPassword;
 
-	@Bean("characters")
+	@Bean("redis")
 	public RedisTemplate<String, String> createRedisTemplate() {
 
 		final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);

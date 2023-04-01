@@ -2,11 +2,12 @@
 Marvel Char App
 
 TODO: 
-CORS? 
+1. CORS? 
 check referrer for Marvel website (add new referrer)
 https://developer.marvel.com/account#
 Check if required whitelisting of SB API
 https://developer.marvel.com/documentation/authorization
+2. Map out Angular and SB Components flow
 
 ## PWA (can find file name in package.json)
 ng add @angular/pwa --project <project-name>@0.0.0 
@@ -52,3 +53,13 @@ Redis (store chracter details - temporary)
 MongoDB (store comments)
 - key: id
 - value: list of comments 
+
+## Managing timestamp
+Generate current timestamp
+```
+Timestamp ts = Timestamp.from(Instant.now());
+```
+Convert String to timestamp
+```
+Timestamp newTs = Timestamp.valueOf("2023-04-01 14:35:28.843888");
+```
