@@ -15,10 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.workshop39.servermarvel.models.MarvelCharacter;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
 
 @Repository
 public class RedisRepo {

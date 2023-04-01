@@ -53,15 +53,6 @@ Optional.of(value);
 opt.isPresent();
 ```
 
-
-
-Angular
-SpringBoot
-Redis (store chracter details - temporary)
-MongoDB (store comments)
-- key: id
-- value: list of comments 
-
 ## Managing timestamp
 Generate current timestamp
 ```
