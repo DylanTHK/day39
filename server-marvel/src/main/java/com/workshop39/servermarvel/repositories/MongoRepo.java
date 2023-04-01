@@ -8,6 +8,7 @@ import java.util.List;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -25,7 +26,8 @@ import jakarta.json.Json;
 
 @Repository
 public class MongoRepo {
-    public static final String COLLECTION_COMMENTS = "comments";
+
+    private final String COLLECTION_COMMENTS = "comments";
 
     @Autowired
     @Qualifier("mongodb")
@@ -44,7 +46,7 @@ public class MongoRepo {
         return Comment.docToComment(inserted);
     }
 
-    // TODO: Retrieve comment into DB (Top 10 latest comments)
+    // Retrieve comment into DB (Top 10 latest comments)
     public List<Comment> getComments(Integer id) {
         // db.comments.aggregate([
         //     {$match: {id: 1017603}},

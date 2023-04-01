@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -15,22 +16,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
     private Logger logger = Logger.getLogger(RedisConfig.class.getName());
 
-	@Value("${spring.redis.host}")
+	@Value("${spring.data.redis.host}")
 	private String redisHost;
 
-	@Value("${spring.redis.port}")
+	@Value("${spring.data.redis.port}")
 	private int redisPort;
 
-	@Value("${spring.redis.database}")
-	private int redisDatabase;
-
-	@Value("${spring.redis.username}")
+	@Value("${spring.data.redis.username}")
 	private String redisUsername;
 
-	@Value("${spring.redis.password}")
+	@Value("${spring.data.redis.password}")
 	private String redisPassword;
 
+	@Value("${spring.data.redis.database}")
+	private int redisDatabase;
+
 	@Bean("redis")
+	@Scope("singleton")
 	public RedisTemplate<String, String> createRedisTemplate() {
 
 		final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);

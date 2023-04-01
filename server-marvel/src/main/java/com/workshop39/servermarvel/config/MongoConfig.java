@@ -8,13 +8,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
-import static com.workshop39.servermarvel.Constants.*;
-
 @Configuration
 public class MongoConfig {
     
-    @Value("${mongo.url}")
+    @Value("${spring.data.mongodb.url}")
     private String connectionString;
+
+    @Value("${spring.data.mongodb.database}")
+    private String DB_MARVEL;
 
     @Bean("mongodb")
     public MongoTemplate mongoTemplate() {
