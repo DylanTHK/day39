@@ -43,10 +43,12 @@ public class MarvelController {
     @GetMapping(path="/characters")
     public ResponseEntity<String> getCharacters(
         @RequestParam String name, 
-        @RequestParam(defaultValue="1") Integer ts,
         @RequestParam(defaultValue="5") Integer limit,
         @RequestParam(defaultValue="0") Integer offset) {
         
+        Timestamp timestamp = Timestamp.from(Instant.now());
+        Integer ts = (int) (timestamp.getTime()/1000);
+
         List<MarvelCharacter> listMC =
             marvelSvc.getMarvelCharacters(name, ts, limit, offset);
         
@@ -127,12 +129,4 @@ public class MarvelController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(array.build().toString());
     }
-
-    // TODO: REMOVE
-    @GetMapping(path="test")
-    public String getMethodName() {
-        
-        return "yes";
-    }
-    
 }
