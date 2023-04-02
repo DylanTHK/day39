@@ -9,22 +9,42 @@ https://developer.marvel.com/documentation/authorization
 2. Map out Angular and SB Components flow
 
 # Angular
+
+## Create new project
+ng new <project_name>
+
+## Generate new component (add --flat for flat structure in folder)
+ng g c components/<comp_name> --skip-tests
+
+## Generate new service
+ng g service services/<service_name> --skip-tests
+
 ## Running Angular with proxy (base URL)
 ng server --proxy-config src/proxy-config.js
 
 ## Steps
 1. update app.module.ts
+ - add service to app.module.ts(under providers)
+ - add necessary imports
+2. add paths for routing (app-routing.module.ts)
 
-
-
-## Working with proxy (Allow for local testing)
-Allows for testing and inserting into SpingBoot after
-
-
-running locally 
+## Add proxy (Allow for local testing)
+Command to run angular with proxy
+```
 ng serve --proxy-config src/proxy.config.js
+```
 
-
+## PWA
+1. add images and manifest.webmanifest
+2. update angular.json > assets
+```
+"src/manifest.webmanifest"
+"src/images"
+```
+3. update index.html
+```
+<link rel="manifest" href="/manifest.webmanifest">
+```
 
 <br>
 
@@ -80,21 +100,26 @@ Timestamp newTs = Timestamp.valueOf("2023-04-01 14:35:28.843888");
 1. add redis / Mongo / SQL 
 2. manually add database & tables(SQL) / collections(Mongo)
 3. setup project ENV VARS (copy from storages)
-    - REDISHOST
-    - REDISPASSWORD
-    - REDISPORT
-    - REDISUSER
-    - MONGO_URL
-    - 
-    - 
+    - Redis 
+        - REDISHOST
+        - REDISPASSWORD
+        - REDISPORT
+        - REDISUSER
+    - MongoDB
+        - MONGO_URL
+    - SQL
+        - 
+
 ** For Springboot call (Must include https)
 ```
+example: 
 https://marvel-server-production.up.railway.app
 ```
 
-
-MONGO_URL=mongodb://mongo:5DfD0uB48GbC3JJOR4qa@containers-us-west-125.railway.app:6650
-REDISHOST=containers-us-west-67.railway.app
-REDISPASSWORD=J1rRXnrOiKq4Vx6YO787
-REDISPORT=7277
-REDISUSER=default
+### 1. Fill in template 
+### 2. Copy into RAW Editor (On railway project)
+MONGO_URL=
+REDISHOST=
+REDISPASSWORD=
+REDISPORT=
+REDISUSER=
