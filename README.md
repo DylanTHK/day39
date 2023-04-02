@@ -91,3 +91,10 @@ Timestamp newTs = Timestamp.valueOf("2023-04-01 14:35:28.843888");
 ```
 https://marvel-server-production.up.railway.app
 ```
+
+
+MONGO_URL=mongodb://mongo:5DfD0uB48GbC3JJOR4qa@containers-us-west-125.railway.app:6650
+REDISHOST=containers-us-west-67.railway.app
+REDISPASSWORD=J1rRXnrOiKq4Vx6YO787
+REDISPORT=7277
+REDISUSER=default
