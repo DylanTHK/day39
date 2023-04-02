@@ -17,7 +17,7 @@ public class MongoConfig {
     @Value("${spring.data.mongodb.database}")
     private String DB_MARVEL;
 
-    @Bean("mongodb")
+    @Bean
     public MongoTemplate mongoTemplate() {
         MongoClient client = MongoClients.create(connectionString);
         return new MongoTemplate(client, DB_MARVEL);

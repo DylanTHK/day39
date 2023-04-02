@@ -30,7 +30,6 @@ public class MongoRepo {
     private final String COLLECTION_COMMENTS = "comments";
 
     @Autowired
-    @Qualifier("mongodb")
     private MongoTemplate mongoTemplate;
     
     // Insert comment into DB (return inserted comment)

@@ -32,7 +32,6 @@ public class RedisConfig {
 	private int redisDatabase;
 
 	@Bean("redis")
-	@Scope("singleton")
 	public RedisTemplate<String, String> createRedisTemplate() {
 
 		final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);

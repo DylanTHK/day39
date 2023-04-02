@@ -12,6 +12,19 @@ https://developer.marvel.com/documentation/authorization
 ## Running Angular with proxy (base URL)
 ng server --proxy-config src/proxy-config.js
 
+## Steps
+1. update app.module.ts
+
+
+
+## Working with proxy (Allow for local testing)
+Allows for testing and inserting into SpingBoot after
+
+
+running locally 
+ng serve --proxy-config src/proxy.config.js
+
+
 
 <br>
 
@@ -61,4 +74,20 @@ Timestamp ts = Timestamp.from(Instant.now());
 Convert String to timestamp
 ```
 Timestamp newTs = Timestamp.valueOf("2023-04-01 14:35:28.843888");
+```
+
+## RAILWAY DEPLOYMENT
+1. add redis / Mongo / SQL 
+2. manually add database & tables(SQL) / collections(Mongo)
+3. setup project ENV VARS (copy from storages)
+    - REDISHOST
+    - REDISPASSWORD
+    - REDISPORT
+    - REDISUSER
+    - MONGO_URL
+    - 
+    - 
+** For Springboot call (Must include https)
+```
+https://marvel-server-production.up.railway.app
 ```
