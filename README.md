@@ -1,12 +1,7 @@
 # Day39 - Marvel Char App
 
 TODO: 
-1. CORS? 
-check referrer for Marvel website (add new referrer)
-https://developer.marvel.com/account#
-Check if required whitelisting of SB API
-https://developer.marvel.com/documentation/authorization
-2. Map out Angular and SB Components flow
+1. Map out Angular and SB Components flow
 
 # Angular
 
