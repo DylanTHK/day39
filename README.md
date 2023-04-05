@@ -15,7 +15,7 @@ ng g c components/<comp_name> --skip-tests
 ng g service services/<service_name> --skip-tests
 
 ## Running Angular with proxy (base URL)
-ng server --proxy-config src/proxy-config.js
+ng serve --proxy-config src/proxy.config.js
 
 ## Steps
 1. update app.module.ts
